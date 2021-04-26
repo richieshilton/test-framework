@@ -40,6 +40,10 @@ jobs:
           # Version of Xcode to use
           xcode-version: "latest-stable"
           
+      - name: Files at project directory
+        run: |
+          ls
+          
       # Create a release
       - name: Archive for simulator
         run: |
