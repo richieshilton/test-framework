@@ -33,13 +33,23 @@ jobs:
           # Version of Xcode to use
           xcode-version: "latest-stable"
           
+      # Create a release
+      - name: Install Mint
+        run: brew install mint
+        
+      - name: Install swift-create-xcframework
+        run: mint install unsignedapps/swift-create-xcframework
+        
+      - name: Build XCFramework
+        run: swift-create-xcframework
+          
       # Build framework
-      - name: Create XCFramework
-        uses: unsignedapps/swift-create-xcframework@v1.3
-        with: 
-          target: TestFramework
-          platforms: ios
-          configuration: release 
+#       - name: Create XCFramework
+#         uses: unsignedapps/swift-create-xcframework@v1.3
+#         with: 
+#           target: TestFramework
+#           platforms: ios
+#           configuration: release 
           
       # Upload build artifacts
       - name: Upload xcframework
