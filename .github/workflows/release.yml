@@ -9,6 +9,13 @@ on:
 #   push:
 #     branches: [ main ]
 
+env:
+  SCHEME: TestFramework
+  CONFIGURATION: Release
+  ARCHIVE_DIR: Archive
+  SIMULATOR_ARCHIVE_NAME: simulator.xcarchive
+  DEVICE_ARCHIVE_NAME: device.xcarchive
+  
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "create_release"
@@ -34,26 +41,42 @@ jobs:
           xcode-version: "latest-stable"
           
       # Create a release
-      - name: Install Mint
-        run: brew install mint
-        
-      - name: Install swift-create-xcframework
-        run: mint install unsignedapps/swift-create-xcframework
-        
-      - name: Build XCFramework
-        run: swift-create-xcframework
-          
-      # Build framework
-#       - name: Create XCFramework
-#         uses: unsignedapps/swift-create-xcframework@v1.3
-#         with: 
-#           target: TestFramework
-#           platforms: ios
-#           configuration: release 
+      - name: Archive for simulator
+        run: |
+          xcodebuild archive \
+            -archivePath $ARCHIVE_DIR/$SIMULATOR_ARCHIVE_NAME \
+            -scheme $SCHEME \
+            -sdk iphonesimulator \
+            -destination "iOS Simulator" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            SKIP_INSTALL=NO \
+            BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
+      - name: Archive for generic iOS devices
+        run: |
+          xcodebuild archive \
+            -archivePath $ARCHIVE_DIR/$DEVICE_ARCHIVE_NAME \
+            -scheme $SCHEME \
+            -sdk iphoneos \
+            -destination "iOS" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            ONLY_ACTIVE_ARCH=NO \
+            SKIP_INSTALL=NO \\
+            BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
+            
+      - name: Create universal XCFramework
+        run: |
+          xcodebuild -create-xcframework \
+            -framework $ARCHIVE_DIR/$SIMULATOR_ARCHIVE_NAME/Products/Library/Frameworks/$SCHEME.framework \
+            -framework $ARCHIVE_DIR/$DEVICE_ARCHIVE_NAME/Products/Library/Frameworks/$SCHEME.framework \
+            -output $ARCHIVE_DIR/$SCHEME.xcframework
+          rm -rf $ARCHIVE_DIR/$DEVICE_ARCHIVE_NAME
+          rm -rf $ARCHIVE_DIR/$SIMULATOR_ARCHIVE_NAME
           
       # Upload build artifacts
       - name: Upload xcframework
         uses: actions/upload-artifact@v2
         with:
-          name: xcframework
-          path: "./*.xcframework"
+          name: XCFramework
+          path: Archive/
