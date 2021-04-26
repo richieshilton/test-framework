@@ -40,9 +40,9 @@ jobs:
           # Version of Xcode to use
           xcode-version: "latest-stable"
           
-      - name: Files at project directory
+      - name: Bump build number
         run: |
-          ls
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${{ github.run_id }}" Airwallex/Info.plist
           
       # Create a release
       - name: Archive for simulator
@@ -74,7 +74,7 @@ jobs:
           xcodebuild -create-xcframework \
             -framework $ARCHIVE_DIR/$SIMULATOR_ARCHIVE_NAME/Products/Library/Frameworks/$SCHEME.framework \
             -framework $ARCHIVE_DIR/$DEVICE_ARCHIVE_NAME/Products/Library/Frameworks/$SCHEME.framework \
-            -output $ARCHIVE_DIR/$SCHEME.xcframework
+            -output $ARCHIVE_DIR/$SCHEME${{ github.run_id }}.xcframework
           rm -rf $ARCHIVE_DIR/$DEVICE_ARCHIVE_NAME
           rm -rf $ARCHIVE_DIR/$SIMULATOR_ARCHIVE_NAME
           
