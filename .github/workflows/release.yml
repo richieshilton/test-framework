@@ -70,7 +70,7 @@ jobs:
           xcodebuild -create-xcframework \
             -framework $ARCHIVE_DIR/$SIMULATOR_ARCHIVE_NAME/Products/Library/Frameworks/$SCHEME.framework \
             -framework $ARCHIVE_DIR/$DEVICE_ARCHIVE_NAME/Products/Library/Frameworks/$SCHEME.framework \
-            -output $ARCHIVE_DIR/$SCHEME_${{ github.run_id }}.xcframework
+            -output $ARCHIVE_DIR/$SCHEME.xcframework
           rm -rf $ARCHIVE_DIR/$DEVICE_ARCHIVE_NAME
           rm -rf $ARCHIVE_DIR/$SIMULATOR_ARCHIVE_NAME
           
