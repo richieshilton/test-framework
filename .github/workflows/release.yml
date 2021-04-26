@@ -47,7 +47,7 @@ jobs:
             -archivePath $ARCHIVE_DIR/$SIMULATOR_ARCHIVE_NAME \
             -scheme $SCHEME \
             -sdk iphonesimulator \
-            -destination "iOS Simulator" \
+            -destination="iOS Simulator" \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             SKIP_INSTALL=NO \
@@ -58,7 +58,7 @@ jobs:
             -archivePath $ARCHIVE_DIR/$DEVICE_ARCHIVE_NAME \
             -scheme $SCHEME \
             -sdk iphoneos \
-            -destination "iOS" \
+            -destination="iOS" \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             ONLY_ACTIVE_ARCH=NO \
