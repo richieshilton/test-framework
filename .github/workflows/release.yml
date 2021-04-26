@@ -35,7 +35,7 @@ jobs:
           
       # Build framework
       - name: Create XCFramework
-        uses: unsignedapps/swift-create-xcframework@v1.4
+        uses: unsignedapps/swift-create-xcframework@v1.3
         with: 
           target: TestFramework
           platforms: ios
