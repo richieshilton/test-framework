@@ -40,10 +40,6 @@ jobs:
           # Version of Xcode to use
           xcode-version: "latest-stable"
           
-      - name: Bump build number
-        run: |
-          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${{ github.run_id }}" Airwallex/Info.plist
-          
       # Create a release
       - name: Archive for simulator
         run: |
