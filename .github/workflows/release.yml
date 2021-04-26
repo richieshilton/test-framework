@@ -6,8 +6,8 @@ name: Distribute framework to github distribution
 on:
    # Enable manual dispatch of the workflow
   workflow_dispatch:
-  push:
-    branches: [ master ]
+#   push:
+#     branches: [ main ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
