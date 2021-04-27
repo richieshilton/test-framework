@@ -4,6 +4,8 @@ on:
   pull_request:
     types: [ opened, synchronize ]
 
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: macos-11.0
